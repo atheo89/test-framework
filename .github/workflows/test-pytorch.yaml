@@ -1,75 +1,22 @@
-name: Build and Test
+name: test pytorch
 
 on:
   push:
     paths:
-      - '**/*'
+      - 'jupyter/pytorch/ubi9-python-3.9/*'
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check affected folder
-        id: check_folder
-        run: |
-          # Determine the affected folder based on the pushed changes
-          # For simplicity, this example assumes that the changed files are
-          # always within one of the folders (base, jupyter, pytorch, tensorflow).
-          # You may need to modify this logic if your structure is more complex.
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "^base/"; then
-            echo "base"
-          elif git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "^jupyter/"; then
-            echo "jupyter"
-          elif git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "^pytorch/"; then
-            echo "pytorch"
-          elif git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "^tensorflow/"; then
-            echo "tensorflow"
-          else
-            echo "No relevant changes found."
-            exit 1
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Build Docker image
         run: |
-          affected_folder=${{ steps.check_folder.outputs.stdout }}
-          case $affected_folder in
-            "base")
-              make base-ubi9-python-3.9
-              ;;
-            "jupyter")
-              make jupyter-datascience-ubi9-python-3.9
-              ;;
-            "pytorch")
-              # Add make command for pytorch image here
-              ;;
-            "tensorflow")
-              # Add make command for tensorflow image here
-              ;;
-          esac
-        working-directory: ./path/to/your/repo
+              make jupyter-pytorch-ubi9-python-3.9
 
       - name: Run test_notebook.ipynb
         run: |
-          affected_folder=${{ steps.check_folder.outputs.stdout }}
-          case $affected_folder in
-            "base")
-              # Add the appropriate command to run the test notebook for the base image
-              ;;
-            "jupyter")
-              docker run -v $(pwd)/jupyter/datascience/ubi9-python-3.9/test:/notebooks \
-                jupyter/datascience/ubi9-python-3.9:test \
-                jupyter nbconvert --execute /notebooks/test_notebook.ipynb
-              ;;
-            "pytorch")
-              # Add the appropriate command to run the test notebook for the pytorch image
-              ;;
-            "tensorflow")
-              # Add the appropriate command to run the test notebook for the tensorflow image
-              ;;
-          esac
+          echo "nothing yet"
