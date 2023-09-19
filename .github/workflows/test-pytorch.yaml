@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'jupyter/pytorch/ubi9-python-3.9/*'
+      - 'jupyter/datascience/ubi9-python-3.9/*'
 
 jobs:
   build-and-test:
