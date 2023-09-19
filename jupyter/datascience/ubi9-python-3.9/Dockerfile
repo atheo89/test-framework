@@ -13,6 +13,8 @@ LABEL name="odh-notebook-jupyter-datascience-ubi9-python-3.9" \
 
 WORKDIR /opt/app-root/bin
 
+
+
 # Install Python packages and Jupyterlab extensions from Pipfile.lock
 COPY Pipfile.lock ./
 # Copy Elyra setup to utils so that it's sourced at startup
